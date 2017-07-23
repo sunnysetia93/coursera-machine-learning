@@ -18,7 +18,10 @@ for iter = 1:num_iters
     %
 
 
-
+    theta0 = sum((X*theta - y).*X(:,1));
+    theta1 = sum((X*theta - y).*X(:,2));
+    V = [theta0; theta1]*(alpha/m);
+    theta = theta - V;
 
 
 
