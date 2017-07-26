@@ -27,10 +27,13 @@ sigma = zeros(1, size(X, 2));
 %       
 
 
-
-
-
-
+    for iter = 1:size(X_norm)(:,2)
+    
+        Z = X_norm(:,iter);
+        mu(:,iter)=mean(Z);
+        sigma(:,iter)=std(Z);
+        X_norm(:,iter) = (Z.-mu(:,iter))/sigma(:,iter);
+    end
 
 
 
