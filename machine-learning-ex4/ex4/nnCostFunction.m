@@ -62,23 +62,48 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+K = num_labels;
+a1 = [ones(m, 1) X];
+z2 = a1*Theta1';
+a2 = sigmoid(z2);
+a2 = [ones(m, 1) a2];
+z3 = a2*Theta2';
+h = sigmoid(z3);
 
+ynew = zeros (m, K);
 
+for i = 1:m
+    temp = zeros(K, 1);
+    temp(y(i)) = 1;
+    ynew(i,:) = temp;
+end
 
+y= ynew;
 
+J = sum(sum((-y.*log(h)) - ((1 - y).*log(1 - h))))/m + (sum(sum(Theta1.^2)) + sum(sum(Theta2.^2)) - sum ((Theta1.^2)(:,1)) - sum((Theta2.^2)(:,1))) * lambda/(2*m);
 
+Delta1 = zeros(size(Theta1));
+Delta2 = zeros(size(Theta2));
 
+for t=1:m 
 
+    a1 = [1 X(t,:)];
+    z2 = a1*Theta1';
+    a2 = sigmoid(z2);
+    a2 = [1 a2];
+    z3 = a2*Theta2';
+    a3 = sigmoid(z3);
 
+    d3 = a3 - y(t,:);
+    d2 = (d3 * Theta2)(2:end).*(sigmoidGradient(z2));
+    Delta1 = Delta1 + d2' * a1;
+    Delta2 = Delta2 + d3' * a2;
+end
 
-
-
-
-
-
-
-
-
+Theta1_grad = Delta1/m +  Theta1 * (lambda/m);
+Theta1_grad(:,1) = Theta1_grad(:,1) - Theta1(:,1) * (lambda/m);
+Theta2_grad = Delta2/m +  Theta2 * (lambda/m);
+Theta2_grad(:,1) = Theta2_grad(:,1) - Theta2(:,1) * (lambda/m);
 
 % -------------------------------------------------------------
 
