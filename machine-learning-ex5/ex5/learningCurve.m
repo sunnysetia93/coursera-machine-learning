@@ -54,6 +54,15 @@ error_val   = zeros(m, 1);
 % ---------------------- Sample Solution ----------------------
 
 
+mVal = size (Xval, 1);
+
+for i = 1:m
+  theta = trainLinearReg (X(1:i, :), y(1:i), lambda);
+  error_train(i) = (sum((X(1:i, :)*theta - y(1:i)).^2))/(2*i);	  
+  error_val(i) = (sum((Xval(1:mVal, :)*theta - yval(1:mVal)).^2))/(2*mVal);	  
+
+end
+
 
 
 
